@@ -21,11 +21,20 @@ http.createServer(function(request, response) {
 
 
 io.on('connection', function(socket){
-    console.log('11111111', socket);
 
-    socket.on('test', function (data) {
-        console.log(data);
+    socket.on('tested', function(data) {
+        socket.emit('tested:' + data.uid, {error : null, data : { test : 1}})
+        console.log('NO NAMESPACE');
     });
+
+});
+
+io.of('/my-space').on('connection', function(socket){
+    socket.on('tested', function(data) {
+        socket.emit('tested:' + data.uid, {error : null, data : { test : 99999999999}})
+        console.log('NAMESPACE');
+    });
+
 });
 
 io.listen(3000);
