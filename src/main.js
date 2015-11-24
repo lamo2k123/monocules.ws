@@ -97,7 +97,7 @@ class WS {
             if(!message || message.error) {
                 reject(message && message.error);
             } else {
-                resolve(message.data)
+                resolve(message.result)
             }
         });
 
