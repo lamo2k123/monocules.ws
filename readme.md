@@ -21,7 +21,7 @@ WS
             )
 
             let pub2 = WS.publish('my-connect-name.my-namespace', {...}); // Namespace
-            
+
             pub2.then(
                 success => { ... },
                 error => { ... }
