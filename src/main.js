@@ -3,79 +3,129 @@ import Socket from 'socket.io-client'
 class WS {
 
     constructor() {
-        this._uid = 0;
-        this._connections = {};
+        this._id = 0;
+        this._connects = {};
+
+        return {
+            connect : this.connect.bind(this),
+            publish : this.publish.bind(this),
+            off     : this.off.bind(this),
+            on      : this.on.bind(this),
+            once    : this.once.bind(this)
+        }
     }
 
-    get generateUID() {
-        return ++this._uid;
+    get generateID() {
+        return ++this._id;
     }
 
-    connect(name, params) {
+    connect(key, params) {
         return new Promise((resolve, reject) => {
-            this._connections[name] = {
-                params,
-                socket : Socket.connect(params.url, params.options)
-            };
+            this._connects[key] = Socket.connect(params.url, params.options);
+            this._connects[key]._params = params;
 
-            this._connections[name].socket
-                .on('connect', resolve)
-                .on('connect_error', reject);
+            this._connects[key]
+                .on('connect', this._connectResolve.bind(this, key, resolve))
+                .on('connect_error', this._connectResolve.bind(this, key, reject));
         });
     }
 
-    publish({name, namespace, event, data, promise = false}) {
-        console.log(arguments)
-        let uid = this.generateUID;
+    _connectResolve(key, cb) {
+        if(typeof key == 'string') {
+            this._connects[key]
+                .off('connect')
+                .off('connect_error');
 
-        return new Promise((resolve, reject) => {
-            if(!name || typeof name != 'string')
-                reject({message: 'invalid name connect', name});
-
-            if(!event || typeof event != 'string')
-                reject({message: 'invalid event name', event});
-
-            if(!this._connections[name].socket)
-                reject({message: 'invalid connect', name, connect : this._connections[name].socket});
-
-            // @TODO: monkey code?? or not!
-            if(namespace) {
-                let connectKey = `${name}:${namespace}`;
-
-                if(!this._connections[connectKey] || !this._connections[connectKey].socket) {
-                    this
-                        .connect(connectKey, {
-                            url     : `${this._connections[name].params.url}/${namespace}`,
-                            options : this._connections[name].params.options
-                        })
-                        .then(
-                            result => this._emit(promise, connectKey, event, uid, data, resolve, reject),
-                            error => reject(error)
-                        )
-                } else
-                    // @TODO: Hmmm...
-                    this._emit(promise, connectKey, event, uid, data, resolve, reject);
-            } else
-                // @TODO: ¯\_(ツ)_/¯
-                this._emit(promise, name, event, uid, data, resolve, reject);
-
-        });
-    }
-
-    _emit(promise, name, event, uid, data, resolve, reject) {
-        if(promise) {
-            this._connections[name].socket.once(`${event}:${uid}`, message => {
-                if(!message || message.error) {
-                    reject(message && message.error);
-                } else {
-                    resolve(message.data)
-                }
-            });
-        } else {
-            resolve(name, event, data, promise, uid);
+            cb && cb(this._connects[key]);
         }
 
-        this._connections[name].socket.emit(event, {uid, data});
+        return this;
+    }
+
+    publish(connect = '', data = {}) {
+        let error = [];
+
+        if(typeof connect != 'string') {
+            error.push({
+                message: 'argument connect not string',
+                connect
+            });
+        }
+
+        connect = connect.split('.');
+        data.id = this.generateID;
+
+        if(typeof data.method != 'string') {
+            error.push({
+                message : 'invalid method name',
+                method  : data.method
+            });
+        }
+
+        if(!this._connects[connect[0]]) {
+            error.push({
+                message: 'invalid connect',
+                connect : this._connects[connect[0]]
+            });
+        }
+
+        return new Promise((resolve, reject) => {
+            let key = connect[1] ? `${connect[0]}/${connect[1]}` : connect[0];
+
+            if(error.length) {
+                reject(error);
+            }
+
+            if(!this._connects[key]) {
+                this
+                    .connect(key, {
+                        url     : `${this._connects[connect[0]]._params.url}/${connect[1]}`,
+                        options : this._connects[connect[0]]._params.options
+                    })
+                    .then(
+                        result => this._emit(key, data, resolve, reject),
+                        reject
+                    )
+            } else {
+                this._emit(key, data, resolve, reject);
+            }
+        });
+    }
+
+    _emit(key, data, resolve, reject) {
+        this._connects[key].once(`message:${data.id}`, message => {
+            if(!message || message.error) {
+                reject(message && message.error);
+            } else {
+                resolve(message.data)
+            }
+        });
+
+        this._connects[key].emit('message', data);
+    }
+
+    _alias(method, key, event, fn) {
+        this._connects[key][method](event, fn);
+
+        return this;
+    }
+
+    off(key, event, fn) {
+        this._alias('off', key, event, fn);
+
+        return this;
+    }
+
+    on(key, event, fn) {
+        this._alias('on', key, event, fn);
+
+        return this;
+    }
+
+    once(key, event, fn) {
+        this._alias('once', key, event, fn);
+
+        return this;
     }
 
 }

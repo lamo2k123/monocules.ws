@@ -1,5 +1,5 @@
 module.exports = {
-    entry   : './src/main',
+    entry   : './test/index',
 
     output  : {
         filename : 'index.js'
@@ -9,7 +9,7 @@ module.exports = {
         loaders: [
             {
                 test    : /\.js$/,
-                include : /src/,
+                include : /(src|test)/,
                 loader  : 'babel',
                 query: {
                     presets: ['es2015']

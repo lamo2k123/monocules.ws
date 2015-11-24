@@ -1,6 +1,33 @@
 {
-    "name": "monocules.ws",
-    "version": "0.0.1",
+    "name": "monocules.ws-client",
+    "version": "1.0.1",
+    "description" : "WebSocket promise wrapper",
+    "keywords" : [
+        "monocules",
+        "ws",
+        "websocket",
+        "soket.io"
+    ],
+    "homepage" : "https://github.com/lamo2k123/monocules.ws",
+    "bugs" : {
+        "url" : "https://github.com/lamo2k123/monocules.ws/issues",
+        "email" : "lamo2k123@gmail.com"
+    },
+    "license" : "MIT",
+    "author" : {
+        "name" : "Aleksey Novikov",
+        "email" : "lamo2k123@gmail.com"
+    },
+    "files": [
+        "readme.md",
+        "index.js",
+        "webpack.config.js",
+        "src/"
+    ],
+    "repository" : {
+        "type" : "git",
+        "url" : "git@github.com:lamo2k123/monocules.ws.git"
+    },
     "dependencies" : {
         "socket.io-client" : "1.3.7"
     },
