@@ -1,6 +1,6 @@
 {
     "name": "monocules.ws-client",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description" : "WebSocket promise wrapper",
     "keywords" : [
         "monocules",
@@ -37,7 +37,7 @@
 
     "scripts" : {
         "prepublish" : "npm run build",
-        
+
         "watch" : "babel ./src/main.js -w -o ./index.js",
         "build" : "babel ./src/main.js -o ./index.js"
     }
