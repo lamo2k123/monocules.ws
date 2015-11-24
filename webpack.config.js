@@ -1,5 +1,5 @@
 module.exports = {
-    entry   : './test/index',
+    entry   : './src/main',
 
     output  : {
         filename : 'index.js'
@@ -30,7 +30,5 @@ module.exports = {
 
     watchOptions : {
         aggregateTimeout : 100
-    },
-
-    devtool : 'eval'
+    }
 };

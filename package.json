@@ -40,6 +40,6 @@
     },
 
     "scripts" : {
-        "watch" : "node test-server.js & webpack --watch"
+        "watch" : "webpack --watch"
     }
 }
