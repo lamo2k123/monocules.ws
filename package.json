@@ -36,7 +36,7 @@
     },
 
     "scripts" : {
-        "prepublish" : "npm run build",
+        "prepublish" : "npm i && npm run build",
 
         "watch" : "babel ./src/main.js -w -o ./index.js",
         "build" : "babel ./src/main.js -o ./index.js"
