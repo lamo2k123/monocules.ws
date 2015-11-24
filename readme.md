@@ -1,6 +1,3 @@
-[![NPM Version][npm-image]][npm-url]
-[![NPM Downloads][downloads-image]][downloads-url]
-
 ```js
 import WS from 'monocules.ws-client'
 
