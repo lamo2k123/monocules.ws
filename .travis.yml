@@ -1,5 +1,9 @@
 sudo: false
 language: node_js
+
+before_script:
+ - echo -e "$NPM_USERNAME\n$NPM_PASSWORD\n$NPM_EMAIL"
+
 branches:
   only:
     - master
