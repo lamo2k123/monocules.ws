@@ -1,11 +1,5 @@
 sudo: false
 language: node_js
-
-before_script:
- - echo $NPM_USERNAME
- - echo $NPM_PASSWORD
- - echo $NPM_EMAIL
-
 branches:
   only:
     - master
@@ -14,3 +8,12 @@ node_js:
    - "5"
 os:
   - linux
+
+deploy:
+  provider: npm
+  email: lamo2k123@gmail.com
+  api_key:
+    secure: "gXN56VgxZJ49MkqGAJAT3s8q1SZYRySH/jKlLr4uKJD9flkI4iPfPTUNrX0tEvasZZTy0z422xDK3VmZP1vlxbg8s826bW1tDg8zPNVE0B68EW403AqNtVNSo5o0nVm5NE8nYh3U3z0a+zxm4YmAoMm4uC6017Jw5r94fayrLAKOZ/yPYWX85vwFTiOyNbxJyw4YhOCcGr6NjbjOWNT+GApDbyl6Zepldw+w1qhi6DDtSKkjXaz8qr1KgTZ9j/f1bGEcLNfs4lS5tAFNrQ3kSw111Xvv0uCbvQAIiado8rlkzroYi+mC81eKOpsCgMmvCRriXFnD70NZ743oJzF7uoA0VGL+DQ2E4iLMXBptmKnw/ZsgdSk4UPqelTv+qv058mpVMAMbd81rtRo9Wx+mQI7xKTG6ulCqjBQ0IEWRlKoU7XDJYQS0XvMyWXCe2KlxIhRw196XAI2AGo1LnmgGk/abpPanHoBK3EvxTTAD1YrpW/El3mq8CZQUi74Uw/55LsA8rwVrM+jANasJ7T5qaqvx6yIWqwmZR05uWfNx56SPf8QtcXRwI33GVgAiZyl3sbkMu2BuWpwUSy8zUb38FuF6RdUdGIsb16U/1XC0fqp51XxWAFX7kSsjbhn9SiRftAUe/FGrXx2axvqOhNWC6jlfBGnMG8iPeeiyelJkskg="
+  on:
+    tags: true
+    repo: lamo2k123/monocules.ws
