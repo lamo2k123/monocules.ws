@@ -11,12 +11,17 @@ class WS {
             publish : this.publish.bind(this),
             off     : this.off.bind(this),
             on      : this.on.bind(this),
-            once    : this.once.bind(this)
+            once    : this.once.bind(this),
+            getConnect : this.getConnect.bind(this)
         }
     }
 
     get generateID() {
         return ++this._id;
+    }
+
+    getConnect(key) {
+        return this._connects[key];
     }
 
     connect(key, params) {
