@@ -75,7 +75,7 @@ class WS {
         }
 
         return new Promise((resolve, reject) => {
-            let key = connect[1] ? `${connect[0]}/${connect[1]}` : connect[0];
+            let key = connect[1] ? `${connect[0]}.${connect[1]}` : connect[0];
 
             if(error.length) {
                 reject(error);
@@ -84,7 +84,7 @@ class WS {
             if(!this._connects[key]) {
                 this
                     .connect(key, {
-                        url     : `${this._connects[connect[0]]._params.url}/${connect[1]}`,
+                        url     : `${this._connects[connect[0]]._params.url}.${connect[1]}`,
                         options : this._connects[connect[0]]._params.options
                     })
                     .then(
@@ -113,7 +113,7 @@ class WS {
         if(!this._connects[key]) {
             this
                 .connect(key, {
-                    url     : `${this._connects[connect[0]]._params.url}/${connect[1]}`,
+                    url     : `${this._connects[connect[0]]._params.url}.${connect[1]}`,
                     options : this._connects[connect[0]]._params.options
                 })
                 .then(
