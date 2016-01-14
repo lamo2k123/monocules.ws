@@ -84,7 +84,7 @@ class WS {
             if(!this._connects[key]) {
                 this
                     .connect(key, {
-                        url     : `${this._connects[connect[0]]._params.url}.${connect[1]}`,
+                        url     : this._connects[connect[0]]._params.url + connect[1],
                         options : this._connects[connect[0]]._params.options
                     })
                     .then(
@@ -111,14 +111,18 @@ class WS {
 
     _alias(method, key, event, fn) {
         if(!this._connects[key]) {
+
+            let connect = key.split('.');
+            key = connect[1] ? `${connect[0]}.${connect[1]}` : connect[0];
+
             this
                 .connect(key, {
-                    url     : `${this._connects[connect[0]]._params.url}.${connect[1]}`,
+                    url     : this._connects[connect[0]]._params.url + connect[1],
                     options : this._connects[connect[0]]._params.options
                 })
                 .then(
                     result => this._connects[key][method](event, fn),
-                    reject
+                    reject => console.error
                 )
         } else {
             this._connects[key][method](event, fn);

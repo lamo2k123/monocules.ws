@@ -1,6 +1,6 @@
 {
     "name": "monocules.ws-client",
-    "version": "1.0.12",
+    "version": "1.0.13",
     "description" : "WebSocket promise wrapper",
     "keywords" : [
         "monocules",
