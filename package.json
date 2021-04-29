@@ -29,7 +29,7 @@
         "url" : "git@github.com:lamo2k123/monocules.ws.git"
     },
     "dependencies" : {
-        "socket.io-client" : "1.4.5"
+        "socket.io-client" : "4.0.0"
     },
     "devDependencies" : {
         "babel-cli" : "6.2.0",
